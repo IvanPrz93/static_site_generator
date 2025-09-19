@@ -1,23 +1,24 @@
-import os, shutil
+import os, shutil, sys
 from copystatic import copy_files
 from gencontent import generate_page_recursively
 
 
 source = "static"
-destination = "public"
+destination = "docs"
+content = "content"
 
 
 def main():
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
+
     if os.path.exists(destination):
         shutil.rmtree(destination)
-        print(f"Succesfully deleted {destination} directory")
     os.makedirs(destination)
-    print(f"Succesfully created {destination} directory")
 
     print(f"Copying {source} files to {destination} directory...")
     copy_files(source, destination)
 
-    generate_page_recursively("content", "template.html", "public")
+    generate_page_recursively(content, "template.html", destination, basepath)
 
 
 main()
